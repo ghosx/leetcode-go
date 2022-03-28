@@ -1,0 +1,74 @@
+```golang
+/**
+给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target 的那 两个 整数，并返回它们的数组下标。
+
+ 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。
+
+ 你可以按任意顺序返回答案。
+
+
+
+ 示例 1：
+
+
+输入：nums = [2,7,11,15], target = 9
+输出：[0,1]
+解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。
+
+
+ 示例 2：
+
+
+输入：nums = [3,2,4], target = 6
+输出：[1,2]
+
+
+ 示例 3：
+
+
+输入：nums = [3,3], target = 6
+输出：[0,1]
+
+
+
+
+ 提示：
+
+
+ 2 <= nums.length <= 10⁴
+ -10⁹ <= nums[i] <= 10⁹
+ -10⁹ <= target <= 10⁹
+ 只会存在一个有效答案
+
+
+ 进阶：你可以想出一个时间复杂度小于 O(n²) 的算法吗？
+ Related Topics 数组 哈希表 👍 13707 👎 0
+
+*/
+
+package main
+
+//leetcode submit region begin(Prohibit modification and deletion)
+func twoSum(nums []int, target int) []int {
+	m := make(map[int]int,len(nums))
+	for i, num := range nums {
+		if v,ok := m[target-num];ok {
+			return []int{v,i}
+		}
+		m[num] = i
+	}
+	return nil
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+
+func main(){
+
+}
+```
+
+这道题关键在于把nums数组转换为以num为key，以index为value的map，这样只需要检查target-num存不存在，即可解答
+
+- 若m[target-num]存在，则说明找到了问题的解，即当前循环的num + 【target - num】 这两个值存在且和为target，此时 他们的index分别是i和v
+
+- 否则返回nil

@@ -1,0 +1,28 @@
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+class Solution {
+    public boolean isHappy(int n) {
+        Set<Integer> set = new HashSet<>();
+        while (true) {
+            int sum = 0;
+            while (n != 0) {
+                sum += Math.pow(n % 10, 2);
+                n = n / 10;
+            }
+            if (sum == 1) {
+                return true;
+            }
+            if (set.contains(sum)) {
+                return false;
+            } else {
+                n = sum;
+                set.add(sum);
+            }
+        }
+    }
+}
+
+//runtime:7 ms
+//memory:33.2 MB

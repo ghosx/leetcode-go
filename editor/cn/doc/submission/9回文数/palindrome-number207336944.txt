@@ -1,0 +1,15 @@
+func isPalindrome(x int) bool {
+	if x < 0  {
+		return false
+	}
+	origin := x
+	reverse := 0
+	for x != 0 {
+		reverse = reverse * 10 + x % 10
+		x /= 10
+	}
+	return origin == reverse
+}
+
+//runtime:32 ms
+//memory:4.9 MB

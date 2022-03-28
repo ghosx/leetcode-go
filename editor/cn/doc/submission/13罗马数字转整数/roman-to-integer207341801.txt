@@ -1,0 +1,25 @@
+func romanToInt(s string) int {
+	l := len(s)
+	ans := 0
+	mp := make(map[byte]int)
+	mp['I'] = 1
+	mp['V'] = 5
+	mp['X'] = 10
+	mp['L'] = 50
+	mp['C'] = 100
+	mp['D'] = 500
+	mp['M'] = 1000
+	tmp := 1000
+	for i := 0; i < l; i++ {
+		now := mp[s[i]]
+		if tmp < now {
+			ans -= 2 * tmp
+		}
+		ans += now
+		tmp = now
+	}
+	return ans
+}
+
+//runtime:8 ms
+//memory:3 MB

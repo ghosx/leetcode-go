@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+//type TreeNode struct {
+//	 Val int
+//	 Left *TreeNode
+//	 Right *TreeNode
+// }
+
+func preorder(root *TreeNode,res *[]int)  {
+	if root == nil {
+		return
+	}
+	*res = append(*res, root.Val)
+	preorder(root.Left,res)
+	preorder(root.Right,res)
+}
+
+func preorderTraversal(root *TreeNode) []int {
+	var res []int
+	preorder(root, &res)
+	return res
+}
+
+//runtime:0 ms
+//memory:2 MB

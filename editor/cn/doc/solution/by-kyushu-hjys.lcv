@@ -1,0 +1,102 @@
+### 解题思路
+
+由于是返回字典序第`k`小的数字，如果有两个数字`10`和`2`，则字典序较小的是`10`，所以可对`n`建立`Trie`树，，比如`n = 13`，形式如下：
+
+        1       2,      3,      4,      5,      6,      7,      8,      9
+    10,11,12,13
+
+每个节点下挂着字典序排列，第一行是个位数，第二行就是十位数字，第三行是百位数，以此类推。
+
+当需要求结果数字时，我们可以从第一棵树开始，累加计算其节点数，如果`k`包含在棵树的节点中，则下探至该树的下一层，否则跳到下一棵树继续搜索。
+假设`n = 198, k = 113`：
+
+第一棵树的节点数是：`1 + 10 + 99 = 110`(即第一层一个节点为`1`，第二层10个节点`10 ~ 19`，第三层99个节点`100 ~ 198`)。
+
+    step = 110, k = 3, curr = 2
+
+由于`k > 100`，所以可以判定，结果不在这棵树，于是跳转到`2`这颗树中查找，第二颗树的节点与前者树之和为：`110 + 1 + 10 = 121`(第二棵树根节点数量是`1`，第二层是`20 ~ 29`节点数为10)。
+由于`k < 121`，所以可以判定在这棵树中，遍历取结果即可。
+
+    step = 11, k = 2, curr = 20
+    step = 1, k = 0, curr = 21
+
+所以最终的结果是`21`。
+
+### 代码
+
+* []
+
+```Rust
+impl Solution {
+    pub fn find_kth_number(n: i32, mut k: i32) -> i32 {
+        let mut curr: i32 = 1;
+        while k > 1 {
+            let (mut step, mut p, mut q): (i64, i64, i64) = (0, curr as i64, curr as i64 + 1);
+            // 计算节点数
+            while p <= n as i64 {
+                step += q.min(n as i64 + 1) - p;
+                p *= 10;
+                q *= 10;
+            }
+            // 根据结果在下一棵树还是当前树做不同的处理
+            if k - 1 >= step as i32 {
+                k -= step as i32;
+                curr += 1;
+            } else {
+                k -= 1;
+                curr *= 10;
+            }
+        }
+        curr as i32
+    }
+}
+```
+
+* []
+
+```Go
+func findKthNumber(n int, k int) int {
+	curr := 1
+	for k > 1 {
+		step, p, q := 0, curr, curr+1
+		for p <= n {
+			step += int(math.Min(float64(n+1), float64(q))) - p
+			p, q = p*10, q*10
+		}
+		if k-1 >= step {
+			k, curr = k-step, curr+1
+		} else {
+			k, curr = k-1, curr*10
+		}
+	}
+	return curr
+}
+```
+
+* []
+
+```Java
+class Solution {
+    public int findKthNumber(int n, int k) {
+        int curr = 1;
+        while (k > 1) {
+            long step = 0, p = curr, q = curr + 1;
+            while (p <= n) {
+                step += Math.min(n + 1, q) - p;
+                p *= 10;
+                q *= 10;
+            }
+
+            if (k - 1 >= step) {
+                k -= step;
+                curr++;
+            } else {
+                k--;
+                curr *= 10;
+            }
+        }
+        return curr;
+    }
+}
+```
+
